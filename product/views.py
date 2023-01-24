@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .serializers import ProductSerializer
+from .serializers import ProductSerializer, CommentSerializer
 from . models import Product, Comment
 # Create your views here.
 
@@ -10,4 +10,4 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all.order_by('date')
-    serializer_class = ProductSerializer
+    serializer_class = CommentSerializer
