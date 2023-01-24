@@ -1,8 +1,9 @@
 from django.db import models
+from category.models import Category
 from django.utils.translation import gettext as _
 # Create your models here.
 
-
+#product model
 class Product(models.Model):
     name = models.CharField(_("عنوان"), max_length=50)
     description = models.CharField(_("توضیحات"), max_length=250)
@@ -12,7 +13,7 @@ class Product(models.Model):
     image = models.ImageField(_("تصویر"), upload_to='images/', blank=True, null=True)
     created_at = models.DateTimeField(_("زمان ایجاد"), auto_now_add=True)
     updated_at = models.DateTimeField(_("زمان به روز رسانی"), auto_now=True)
-    '''ToDo add category'''
+    category  = models.ForeignKey(Category,on_delete=models.SET_NULL, blank=True)
 
     def __str__(self):
         return self.name
@@ -22,6 +23,7 @@ class Product(models.Model):
         verbose_name_plural = 'کالاها'
 
 
+#comment model
 class Comment(models.Model):
     product = models.ForeignKey("Product", verbose_name=_("کالا"),related_name='comments' ,on_delete=models.CASCADE)
     name = models.CharField(_("نام کاربر"), max_length=100) 
@@ -30,7 +32,6 @@ class Comment(models.Model):
     date = models.DateField(_("تاریخ ثبت"), auto_now=False, auto_now_add=True)
     def __str__(self):
        return self.email
-        
             
     class Meta:
         verbose_name = ' نظر '
