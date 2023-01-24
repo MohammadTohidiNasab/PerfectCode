@@ -21,3 +21,17 @@ class Product(models.Model):
         verbose_name = 'کالا'
         verbose_name_plural = 'کالاها'
 
+
+class Comment(models.Model):
+    product = models.ForeignKey("Product", verbose_name=_("کالا"),related_name='comments' ,on_delete=models.CASCADE)
+    name = models.CharField(_("نام کاربر"), max_length=100) 
+    email = models.EmailField(_("ادرس الکترونیکی"), max_length=254)        
+    massage = models.TextField(_("متن نظر"))
+    date = models.DateField(_("تاریخ ثبت"), auto_now=False, auto_now_add=True)
+    def __str__(self):
+       return self.email
+        
+            
+    class Meta:
+        verbose_name = ' نظر '
+        verbose_name_plural = ' نظرات '
