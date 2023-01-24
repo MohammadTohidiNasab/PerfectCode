@@ -13,7 +13,7 @@ class Product(models.Model):
     image = models.ImageField(_("تصویر"), upload_to='images/', blank=True, null=True)
     created_at = models.DateTimeField(_("زمان ایجاد"), auto_now_add=True)
     updated_at = models.DateTimeField(_("زمان به روز رسانی"), auto_now=True)
-    category  = models.ForeignKey(Category,on_delete=models.SET_NULL, blank=True)
+    category  = models.ForeignKey(Category,on_delete=models.CASCADE, blank=True)
 
     def __str__(self):
         return self.name
@@ -25,7 +25,7 @@ class Product(models.Model):
 
 #comment model
 class Comment(models.Model):
-    product = models.ForeignKey("Product", verbose_name=_("کالا"),related_name='comments' ,on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
     name = models.CharField(_("نام کاربر"), max_length=100) 
     email = models.EmailField(_("ادرس الکترونیکی"), max_length=254)        
     massage = models.TextField(_("متن نظر"))
