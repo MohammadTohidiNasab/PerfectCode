@@ -18,6 +18,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 #django
+
+#listview
 def product_list(request):
     food_list = Product.objects.all()
     context= {
@@ -27,12 +29,12 @@ def product_list(request):
     return render (request,'shop.html',context)
 
 
-
+#detailview
 def product_detail(requste,id):
     food = Product.objects.get(id = id)
     
     context = {
-        'product': product
+        'product': product_detail
     }
     
     return render(requste,'detail.html',context)
