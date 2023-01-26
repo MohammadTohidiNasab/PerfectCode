@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from .serializers import ProductSerializer
 from . models import Product
-
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render
 
 # Create your views here.
@@ -10,12 +10,14 @@ from django.shortcuts import render
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category', 'stock']
 
 
 
 #django
 
-#listview
+#list view
 def product_list(request):
     food_list = Product.objects.all()
     context= {
@@ -25,7 +27,7 @@ def product_list(request):
     return render (request,'shop.html',context)
 
 
-#detailview
+#detail view
 def product_detail(requste,id):
     food = Product.objects.get(id = id)
     
