@@ -9,6 +9,7 @@ class Product(models.Model):
     description = models.CharField(_("توضیحات"), max_length=250,null=True)
     price = models.CharField(_("قیمت"), max_length=50,null=True)
     stock = models.IntegerField(_("تعداد موجود"), default=0 ,null=True)
+    color = models.CharField(_("رنگ"), max_length=50,null=True)
     is_active = models.BooleanField(_("فعال"), default=True, blank=True ,null=True)
     image = models.ImageField(_("تصویر"), upload_to='images/', blank=True, null=True)
     created_at = models.DateTimeField(_("زمان ایجاد"), auto_now_add=True ,null=True)

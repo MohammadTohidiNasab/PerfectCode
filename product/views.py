@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .serializers import ProductSerializer, CommentSerializer
-from . models import Product, Comment
+from .serializers import ProductSerializer
+from . models import Product
 
 from django.shortcuts import render
 
@@ -10,10 +10,6 @@ from django.shortcuts import render
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all().order_by('date')
-    serializer_class = CommentSerializer
 
 
 
