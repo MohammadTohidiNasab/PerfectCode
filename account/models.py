@@ -69,7 +69,10 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
-
+    
+    class Meta:
+        verbose_name = 'کاربر'
+        verbose_name_plural = 'کاربرها'
 
 class Otp(models.Model):
     token = models.CharField(max_length=200, null=True)
