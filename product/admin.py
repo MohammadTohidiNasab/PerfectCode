@@ -12,7 +12,8 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     ordering = ('created_at',)
     filter_horizontal = ()
-
+    list_display = ('name','price','created_at','color','stock')
+    list_editable = ('price','stock')
     
     
 admin.site.register(Product,ProductAdmin)
