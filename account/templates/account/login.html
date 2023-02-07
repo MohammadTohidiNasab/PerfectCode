@@ -13,8 +13,8 @@
                     <form method="post">
                         {% csrf_token %}
                         <div class="control-group">
-                            {{ form.phone }}
-                             {% for error in form.phone.errors %}
+                            {{ form.username }}
+                             {% for error in form.username.errors %}
                                 <p class="alert alert-danger">{{ error }}</p>
                             {% endfor %}
                             <p class="help-block text-danger"></p>
