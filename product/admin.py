@@ -10,10 +10,11 @@ admin.site.index_title = 'درگاه مدیریت سایت فروشگاه'
 
 class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name',)
+    list_filter =('category',)
     ordering = ('created_at',)
     filter_horizontal = ()
     list_display = ('name','price','created_at','color','stock')
     list_editable = ('price','stock')
-    
+
     
 admin.site.register(Product,ProductAdmin)
