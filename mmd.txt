@@ -1,7 +1,0 @@
-    user  
-    product_names 
-    total_products 
-    transaction_id  
-    total_amount 
-    created_at 
-    updated_at 
