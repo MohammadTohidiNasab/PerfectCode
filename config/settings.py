@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_filters',
     'product.apps.ProductConfig',
     'category.apps.CategoryConfig',
+    'order.apps.OrderConfig',
     
     'home.apps.HomeConfig',
     'account.apps.AccountConfig',
