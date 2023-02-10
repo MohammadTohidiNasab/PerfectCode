@@ -3,4 +3,4 @@ from .models import Ordering
 # Register your models here.
 
 
-admin.site.register('Ordering')
+admin.site.register(Ordering)
