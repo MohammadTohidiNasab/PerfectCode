@@ -1,12 +1,6 @@
-from rest_framework import routers
-from django.urls import path, include
-
+from django.conf.urls import url
 from . import views
 
-# router = routers.DefaultRouter()
-# router.register(r'', views.OrderViewSet)
-
 urlpatterns = [
-    # path('add/<str:id>/<str:token>/', views.add, name='order.add'),
-    # path('', include(router.urls))
+    url(r'^request/$', views.send_request, name='request'),
 ]

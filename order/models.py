@@ -9,5 +9,5 @@ class Ordering(models.Model):
     total_products = models.CharField(max_length=30) 
     transaction_id  = models.IntegerField()
     total_amount = models.CharField(max_length=80)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

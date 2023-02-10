@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from .models import Ordering
+from . models import Ordering
 
 
 class OrderingSerializer(serializers.HyperlinkedModelSerializer):
