@@ -4,7 +4,7 @@ from account.models import User
 
 
 class Ordering(models.Model):
-    user = models.ForeignKey(User,max_length=30)
+    user = models.ForeignKey(User,max_length=30,on_delete=models.CASCADE)
     product_names = models.CharField(max_length=20) 
     total_products = models.CharField(max_length=30) 
     transaction_id  = models.IntegerField()

@@ -12,6 +12,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category', 'color','price']
+    search_fields = ['price','category','name']
 
 
 
