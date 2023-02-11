@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .serializers import ProductSerializer
-from . models import Product
+from .serializers import ProductSerializer,CommentSerializer
+from . models import Product,Comment
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render
 
@@ -18,6 +18,10 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     ordering_fields = ['price']
 
+
+class CommentApiViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
 
 

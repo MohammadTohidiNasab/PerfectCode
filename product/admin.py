@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product 
+from .models import Product ,Comment
 # Register your models here.
 
 
@@ -24,8 +24,10 @@ class ProductAdmin(admin.ModelAdmin):
             req.save()
         self.message_user(request,'انجام شد')
 
-    # change_to_unavailable.short_descriptions = 'ناموجود شدند'
+    change_to_unavailable.short_descriptions = 'ناموجود شدند'
     actions = ('change_to_unavailable',)
 
 
 admin.site.register(Product,ProductAdmin)
+
+admin.site.register(Comment)

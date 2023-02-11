@@ -16,7 +16,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
         def validate_massage(self,value):
-            filter_list = ['ناسالم','سیاه','کثیف','اشغال']
+            filter_list = ['ناسالم','سیاه','کثیف','اشغال','dark']
 
             for i in filter_list:
                 if i in value:
