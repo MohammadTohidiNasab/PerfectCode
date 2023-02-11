@@ -15,6 +15,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(_("زمان ایجاد"), auto_now_add=True ,null=True)
     updated_at = models.DateTimeField(_("زمان به روز رسانی"), auto_now=True,null=True)
     category  = models.ForeignKey(Category,on_delete=models.CASCADE, blank=True,null=True)
+    
 
     def __str__(self):
         return self.name

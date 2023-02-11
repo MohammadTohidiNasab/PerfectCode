@@ -10,5 +10,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['name',]
+    ordering_fields = ['created_at',]
 
 

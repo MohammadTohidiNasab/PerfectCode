@@ -8,6 +8,6 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_display = ('slug','created_at')
 
-    
+
 
 admin.site.register(Category,CategoryAdmin)

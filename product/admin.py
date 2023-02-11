@@ -13,8 +13,19 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter =('category',)
     ordering = ('created_at',)
     filter_horizontal = ()
-    list_display = ('name','price','created_at','color','stock')
-    list_editable = ('price','stock')
+    list_display = ('name','price','is_active','color','stock')
+    list_editable = ('price','stock','is_active')
 
-    
+
+#costum actions
+    def change_to_unavailable(self,request,queryset):
+        for req in queryset:
+            req.is_active = False
+            req.save()
+        self.message_user(request,'انجام شد')
+
+    # change_to_unavailable.short_descriptions = 'ناموجود شدند'
+    actions = ('change_to_unavailable',)
+
+
 admin.site.register(Product,ProductAdmin)

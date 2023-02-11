@@ -11,8 +11,13 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().order_by('id')
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category', 'color','price']
-    search_fields = ['price','category','name']
+
+    filterset_fields = ['category','price']
+
+    search_fields = ['category']
+
+    ordering_fields = ['price']
+
 
 
 

@@ -8,3 +8,17 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('id', 'name', 'description', 'price', 'image', 'category')
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+        def validate_massage(self,value):
+            filter_list = ['ناسالم','سیاه','کثیف','اشغال']
+
+            for i in filter_list:
+                if i in value:
+                    raise serializers.ValidationError('کامنت نا محترمانه')
+                    
