@@ -15,11 +15,10 @@ class ProductViewSet(viewsets.ModelViewSet):
     filterset_fields = ['category','price']
 
     search_fields = ['category']
-
     ordering_fields = ['price']
 
 
-class CommentApiViewSet(viewsets.ModelViewSet):
+class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

@@ -4,8 +4,8 @@ from rest_framework import routers
 
 
 router = routers.DefaultRouter()
-router.register(r'', views.ProductViewSet)
-router.register('comment', views.CommentApiViewSet)
+router.register('', views.ProductViewSet)
+router.register('comment', views.CommentViewSet)
 
 
 

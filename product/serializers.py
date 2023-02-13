@@ -13,12 +13,12 @@ class ProductSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ('product','name','email','massage','date')
 
-        def validate_massage(self,value):
-            filter_list = ['ناسالم','سیاه','کثیف','اشغال','dark']
+        # def validate_massage(self,value):
+        #     filter_list = ['ناسالم','سیاه','کثیف','اشغال','dark']
 
-            for i in filter_list:
-                if i in value:
-                    raise serializers.ValidationError('کامنت نا محترمانه')
+        #     for i in filter_list:
+        #         if i in value:
+        #             raise serializers.ValidationError('کامنت نا محترمانه')
                     
