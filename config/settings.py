@@ -117,7 +117,7 @@ LANGUAGE_CODE = 'fa-ir'
 
 TIME_ZONE = 'Asia/Tehran'
 
-USE_I18N = True
+# USE_I18N = True (its commented for start working with pytest)
 
 USE_TZ = True
 
