@@ -1,11 +1,8 @@
 from django.test import Client, TestCase
 import pytest
 from account.models import User
-
-
-def test_category_view(client):
-    response = client.get(path = '/')
-    assert response.status_code == 200
+from category.models import Category
+from.factory import UserFactory
 
 
 #account test
@@ -30,7 +27,7 @@ def test_account_register(client):
 
 @pytest.mark.django_db
 def test_account_signup(client):
-    user = User.objects.create_user('username','password')
+    user = UserFactory()
     client.login(fullname=user.fullname,password='password')
     response = client.get(path = '/account/otplogin',follow=True)
     assert response.status_code == 200
@@ -40,4 +37,19 @@ def test_account_logout(client):
     response = client.get(path = '/account/logout')
     assert response.status_code == 302
 #finish account testing
+
+
+#start category test
+
+def test_category_view(client):
+    response = client.get(path = '/')
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_add_category(client):
+    newcategory = Category.objects.create(name='new category',description='its just test',slug='category')
+    response = client.get(path='/category/api/')
+    assert 200 == response.status_code
+    assert 'new category' in str(response.content)
 
