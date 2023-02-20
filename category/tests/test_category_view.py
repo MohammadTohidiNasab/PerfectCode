@@ -1,6 +1,5 @@
 from django.test import Client, TestCase
 import pytest
-from account.models import User
 from category.models import Category
 from.factory import UserFactory
 
