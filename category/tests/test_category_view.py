@@ -71,3 +71,10 @@ def test_add_category_factory(client):
     response = client.get(path='/category/api/')
     assert 200 == response.status_code
     assert newcategory.description in str(response.content )
+
+@pytest.mark.django_db
+def test_create_category(client):
+    info = {'name': 'new' ,'description':'new category' ,'slug':'new'}
+    responsse = client.post(path = '/category/api/',data=info,follow=True)
+
+    assert 201 == responsse.status_code
