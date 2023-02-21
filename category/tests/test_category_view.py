@@ -1,7 +1,8 @@
+from account.models import User
 from django.test import Client, TestCase
 import pytest
 from category.models import Category
-from.factory import UserFactory
+from.factory import UserFactory , CategoryFactory
 
 
 #account test
@@ -25,17 +26,27 @@ def test_account_register(client):
 
 
 @pytest.mark.django_db
-def test_account_signup(client):
+def test_account_signup_factory(client):
     user = UserFactory()
     client.login(fullname=user.fullname,password='password')
     response = client.get(path = '/account/otplogin',follow=True)
     assert response.status_code == 200
 
 
+@pytest.mark.django_db
+def test_account_signup(client):
+    user = User.objects.create (fullname ='name',password ='password')
+    client.login(fullname=user.fullname,password='password')
+    response = client.get(path = '/account/otplogin',follow=True)
+    assert response.status_code == 200
+
+
+
 def test_account_logout(client):
     response = client.get(path = '/account/logout')
     assert response.status_code == 302
 #finish account testing
+
 
 
 #start category test
@@ -52,3 +63,11 @@ def test_add_category(client):
     assert 200 == response.status_code
     assert 'new category' in str(response.content)
 
+
+
+@pytest.mark.django_db
+def test_add_category_factory(client):
+    newcategory = CategoryFactory()
+    response = client.get(path='/category/api/')
+    assert 200 == response.status_code
+    assert newcategory.description in str(response.content )
