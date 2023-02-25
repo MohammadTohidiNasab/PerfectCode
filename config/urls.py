@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path ,include
 from . import settings
 from django.conf.urls.static import static
+from azbankgateways.urls import az_bank_gateways_urls
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +28,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('order/', include('order.urls')),
     path('', include('home.urls')),
+    path('bankgateways/', az_bank_gateways_urls()),
+
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

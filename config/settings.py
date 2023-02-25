@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'account.apps.AccountConfig',
 
+    'azbankgateways',
+
 ]
 
 MIDDLEWARE = [
@@ -154,4 +156,28 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 8
     
+}
+
+
+
+#banks
+AZ_IRANIAN_BANK_GATEWAYS = {
+   'GATEWAYS': {
+       'BMI': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
+           'SECRET_KEY': '<YOUR SECRET CODE>',
+       },
+       'SEP': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
+       },
+   },
+   'DEFAULT': 'BMI',
+   'BANK_PRIORITIES': [
+       'BMI',
+       'SEP',
+       # and so on ...
+    'CURRENCY': 'IRR'
+   ],
 }
