@@ -23,10 +23,6 @@ def go_to_gateway_view(request):
     return bank.redirect_gateway()
 
 
-
-
-
-
 def callback_gateway_view(request):
     tracking_code = request.GET.get(settings.TRACKING_CODE_QUERY_PARAM, None)
     if not tracking_code:
