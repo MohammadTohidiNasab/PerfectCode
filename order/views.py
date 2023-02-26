@@ -30,20 +30,20 @@ def go_to_gateway_view(request):
 def callback_gateway_view(request):
     tracking_code = request.GET.get(settings.TRACKING_CODE_QUERY_PARAM, None)
     if not tracking_code:
-        logging.debug(&quotاین لینک معتبر نیست.&quot)
+        logging.debug ('&quotاین لینک معتبر نیست.&quot')
         raise Http404
 
     try:
         bank_record = bank_models.Bank.objects.get(tracking_code=tracking_code)
     except bank_models.Bank.DoesNotExist:
-        logging.debug(&quotاین لینک معتبر نیست.&quot)
+        logging.debug('&quotاین لینک معتبر نیست.&quot')
         raise Http404
 
     # در این قسمت باید از طریق داده هایی که در بانک رکورد وجود دارد، رکورد متناظر یا هر اقدام مقتضی دیگر را انجام دهیم
     if bank_record.is_success:
         # پرداخت با موفقیت انجام پذیرفته است و بانک تایید کرده است.
         # می توانید کاربر را به صفحه نتیجه هدایت کنید یا نتیجه را نمایش دهید.
-        return HttpResponse(&quotپرداخت با موفقیت انجام شد.&quot)
+        return HttpResponse('&quotپرداخت با موفقیت انجام شد.&quot')
 
     # پرداخت موفق نبوده است. اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.
-    return HttpResponse(&quotپرداخت با شکست مواجه شده است. اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.&quot)
+    return HttpResponse('&quotپرداخت با شکست مواجه شده است. اگر پول کم شده است ظرف مدت 48 ساعت پول به حساب شما بازخواهد گشت.&quot')
