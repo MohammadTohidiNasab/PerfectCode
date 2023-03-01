@@ -153,10 +153,27 @@ REST_FRAMEWORK = {
     
 
     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 1
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    # 'PAGE_SIZE': 8
-    
+    'PAGE_SIZE': 1,
+
+
+#throttle
+    # 'DEFAULT_THROTTLE_CLASSES' : (
+    #     'rest_framework.throttling.AnonrRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle',
+    # ),
+
+    # 'DEFAULT_THROTTLE_RATES' : {
+    #     'anon' : '5/minute' ,
+    #     'user' : '10/minute'
+    # }
+        'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/minute',
+        'user': '10/minute',
+    }
 }
 
 
@@ -169,6 +186,7 @@ AZ_IRANIAN_BANK_GATEWAYS = {
            'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
            'SECRET_KEY': '<YOUR SECRET CODE>',
        },
+       
        'SEP': {
            'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
            'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
