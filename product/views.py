@@ -3,6 +3,7 @@ from .serializers import ProductSerializer,CommentSerializer
 from . models import Product,Comment
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -16,7 +17,9 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     search_fields = ['category']
     ordering_fields = ['price']
-
+    
+    #permission for authenticated users
+    permission_classes = [IsAuthenticated]
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
