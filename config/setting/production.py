@@ -1,4 +1,4 @@
-from . base import *
+from .base import *
 
 
 DEBUG = False
@@ -17,3 +17,9 @@ DATABASES = {
 ALLOWED_HOSTS = [
     'http://127.0.0.1:8000',
 ]
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECRET_KEY = os.environ['SECRET_KEY']

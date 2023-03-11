@@ -1,0 +1,21 @@
+from django.test import TestCase
+from django.urls import reverse
+from product.models import Product
+from rest_framework import status
+
+
+
+class ModelTest(TestCase):
+
+    def test_Man(self):
+        data = {
+            'name':'newproduct',
+            'description':'newproductInfo',
+            'stock':12
+        }
+        response = self.client.post('/product/api',data)
+
+        self.assertEqual(response.status_code,status.HTTP_201_CREATED)
+        self.assertEqual(Product.objects.count(), 1)
+        self.assertEqual(Product.objects.get().name, 'newproduct')
+
