@@ -27,10 +27,11 @@ class ProductAdmin(admin.ModelAdmin):
     change_to_unavailable.short_descriptions = 'ناموجود شدند'
     actions = ('change_to_unavailable',)
 
-
 admin.site.register(Product,ProductAdmin)
 
 
 class CommentAdmin(admin.ModelAdmin):
         list_display = ('user','product',)
+
+
 admin.site.register(Comment,CommentAdmin)
