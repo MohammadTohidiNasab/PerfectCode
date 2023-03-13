@@ -30,4 +30,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product,ProductAdmin)
 
-admin.site.register(Comment)
+
+class CommentAdmin(admin.ModelAdmin):
+        list_display = ('user','product',)
+admin.site.register(Comment,CommentAdmin)
