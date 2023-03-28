@@ -43,7 +43,7 @@ class UserChangeForm(forms.ModelForm):
         fields = ('phone', 'password', 'is_active', 'is_admin')
 
 class LoginForm(forms.Form):
-    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), validators=[validators.MaxLengthValidator(11)])
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), validators=[validators.MaxLengthValidator(50)])
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 class RegisterForm(forms.Form):

@@ -1,5 +1,6 @@
 from django.db import models
 from category.models import Category
+from account.models import User
 from django.utils.translation import gettext as _
 # Create your models here.
 
@@ -15,6 +16,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(_("زمان ایجاد"), auto_now_add=True ,null=True)
     updated_at = models.DateTimeField(_("زمان به روز رسانی"), auto_now=True,null=True)
     category  = models.ForeignKey(Category,on_delete=models.CASCADE, blank=True,null=True)
+    
 
     def __str__(self):
         return self.name
@@ -26,6 +28,7 @@ class Product(models.Model):
 
 #comment model
 class Comment(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE, blank=True,null=True)
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     name = models.CharField(_("نام کاربر"), max_length=100,null=True) 
     email = models.EmailField(_("ادرس الکترونیکی"), max_length=254,null=True)        
