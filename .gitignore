@@ -4,3 +4,7 @@ venv/
 /.idea
 .vscode
 /.vscode
+__pycache__
+/__pycache__
+/__pycache__*
+*__pycache__
