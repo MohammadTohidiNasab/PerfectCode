@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
 
     'azbankgateways',
+    'drf_spectacular',
 
 ]
 
@@ -157,15 +158,6 @@ REST_FRAMEWORK = {
 
 
 #throttle
-    # 'DEFAULT_THROTTLE_CLASSES' : (
-    #     'rest_framework.throttling.AnonrRateThrottle',
-    #     'rest_framework.throttling.UserRateThrottle',
-    # ),
-
-    # 'DEFAULT_THROTTLE_RATES' : {
-    #     'anon' : '5/minute' ,
-    #     'user' : '10/minute'
-    # }
         'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle'
@@ -173,7 +165,9 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '10/minute',
         'user': '10/minute',
-    }
+    },
+    
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
@@ -198,4 +192,13 @@ AZ_IRANIAN_BANK_GATEWAYS = {
        'SEP',
        # and so on ...
    ],
+}
+
+
+#drf_spectacular settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
