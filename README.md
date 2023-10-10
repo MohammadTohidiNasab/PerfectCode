@@ -50,6 +50,7 @@ The following tools were used in this project:
 - docker
 - drf_yasg
 - sms otp sign up
+- jwt
 
 ## :white_check_mark: Requirements ##
 
