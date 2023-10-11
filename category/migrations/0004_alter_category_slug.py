@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('category', '0003_alter_category_options'),
+        ("category", "0003_alter_category_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='slug',
-            field=models.SlugField(null=True, verbose_name='عنوان'),
+            model_name="category",
+            name="slug",
+            field=models.SlugField(null=True, verbose_name="عنوان"),
         ),
     ]

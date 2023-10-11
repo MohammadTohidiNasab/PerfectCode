@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('category', '0002_category_slug'),
+        ("category", "0002_category_slug"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='category',
-            options={'verbose_name': 'دسته بندی', 'verbose_name_plural': 'دسته بندی'},
+            name="category",
+            options={"verbose_name": "دسته بندی", "verbose_name_plural": "دسته بندی"},
         ),
     ]

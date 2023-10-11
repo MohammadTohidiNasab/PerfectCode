@@ -1,7 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser
-)
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 class UserManager(BaseUserManager):
@@ -10,7 +8,7 @@ class UserManager(BaseUserManager):
         Creates and saves a User with the given phone,password.
         """
         if not phone:
-            raise ValueError('Users must have an phone')
+            raise ValueError("Users must have an phone")
 
         user = self.model(
             phone=phone,
@@ -35,20 +33,20 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(
-        verbose_name='آدرس ایمیل',
+        verbose_name="آدرس ایمیل",
         max_length=255,
         null=True,
         blank=True,
         unique=True,
     )
-    fullname = models.CharField(max_length=50, verbose_name='نام کامل')
-    phone = models.CharField(max_length=12, unique=True, verbose_name='تلفن')
+    fullname = models.CharField(max_length=50, verbose_name="نام کامل")
+    phone = models.CharField(max_length=12, unique=True, verbose_name="تلفن")
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'phone'
+    USERNAME_FIELD = "phone"
     REQUIRED_FIELDS = []
 
     def __str__(self):
@@ -69,10 +67,11 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
-    
+
     class Meta:
-        verbose_name = 'کاربر'
-        verbose_name_plural = 'کاربرها'
+        verbose_name = "کاربر"
+        verbose_name_plural = "کاربرها"
+
 
 class Otp(models.Model):
     token = models.CharField(max_length=200, null=True)

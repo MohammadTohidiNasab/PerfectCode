@@ -9,15 +9,15 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
 
-    User.fullname = factory.Sequence(lambda n: f'user_{n:04}')
-    email = factory.LazyAttribute(lambda user: f'{User.fullname}@gmail.com')
-    password = factory.LazyFunction(lambda: make_password('password'))
-
+    User.fullname = factory.Sequence(lambda n: f"user_{n:04}")
+    email = factory.LazyAttribute(lambda user: f"{User.fullname}@gmail.com")
+    password = factory.LazyFunction(lambda: make_password("password"))
 
 
 class CategoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Category
+
     name = fuzzy.FuzzyText(length=20)
     description = fuzzy.FuzzyText(length=200)
-    slug  = fuzzy.FuzzyText(length=20)
+    slug = fuzzy.FuzzyText(length=20)
