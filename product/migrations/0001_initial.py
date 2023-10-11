@@ -4,29 +4,54 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Product',
+            name="Product",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, verbose_name='عنوان')),
-                ('description', models.CharField(max_length=250, verbose_name='توضیحات')),
-                ('price', models.CharField(max_length=50, verbose_name='قیمت')),
-                ('stock', models.IntegerField(default=0, verbose_name='تعداد موجود')),
-                ('is_active', models.BooleanField(blank=True, default=True, verbose_name='فعال')),
-                ('image', models.ImageField(blank=True, null=True, upload_to='images/', verbose_name='تصویر')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='زمان ایجاد')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='زمان به روز رسانی')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, verbose_name="عنوان")),
+                (
+                    "description",
+                    models.CharField(max_length=250, verbose_name="توضیحات"),
+                ),
+                ("price", models.CharField(max_length=50, verbose_name="قیمت")),
+                ("stock", models.IntegerField(default=0, verbose_name="تعداد موجود")),
+                (
+                    "is_active",
+                    models.BooleanField(blank=True, default=True, verbose_name="فعال"),
+                ),
+                (
+                    "image",
+                    models.ImageField(
+                        blank=True, null=True, upload_to="images/", verbose_name="تصویر"
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="زمان ایجاد"),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(
+                        auto_now=True, verbose_name="زمان به روز رسانی"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'کالا',
-                'verbose_name_plural': 'کالاها',
+                "verbose_name": "کالا",
+                "verbose_name_plural": "کالاها",
             },
         ),
     ]

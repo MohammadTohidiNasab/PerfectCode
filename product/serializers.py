@@ -3,17 +3,19 @@ from .models import Product, Comment
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(max_length=None, allow_empty_file=False, allow_null=True, required=False)
+    image = serializers.ImageField(
+        max_length=None, allow_empty_file=False, allow_null=True, required=False
+    )
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'price', 'image', 'category')
+        fields = ("id", "name", "description", "price", "image", "category")
 
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('product','name','email','massage','date')
+        fields = ("product", "name", "email", "massage", "date")
 
         # def validate_massage(self,value):
         #     filter_list = ['ناسالم','سیاه','کثیف','اشغال','dark']
@@ -21,4 +23,3 @@ class CommentSerializer(serializers.ModelSerializer):
         #     for i in filter_list:
         #         if i in value:
         #             raise serializers.ValidationError('کامنت نا محترمانه')
-                    
