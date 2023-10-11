@@ -2,6 +2,13 @@ from django.urls import reverse
 from azbankgateways import bankfactories, models as bank_models, default_settings as settings
 import logging
 from django.http import HttpResponse, Http404
+from .models import Coupon, Ordering
+from django.shortcuts import redirect
+from .forms import CouponApplyForm
+from django.contrib import messages
+import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 
 def go_to_gateway_view(request):
     # خواندن مبلغ از هر جایی که مد نظر است
@@ -43,3 +50,22 @@ def callback_gateway_view(request):
 
     # پرداخت موفق نبوده است. اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.
     return HttpResponse('&quotپرداخت با شکست مواجه شده است. اگر پول کم شده است ظرف مدت 48 ساعت پول به حساب شما بازخواهد گشت.&quot')
+
+
+class CouponApplyView(LoginRequiredMixin, View):
+	form_class = CouponApplyForm
+
+	def post(self, request, order_id):
+		now = datetime.datetime.now()
+		form = self.form_class(request.POST)
+		if form.is_valid():
+			code = form.cleaned_data['code']
+			try:
+				coupon = Coupon.objects.get(code__exact=code, valid_from__lte=now, valid_to__gte=now, active=True)
+			except Coupon.DoesNotExist:
+				messages.error(request, 'this coupon does not exists', 'danger')
+				return redirect('orders:order_detail', order_id)
+			order = Ordering.objects.get(id=order_id)
+			order.discount = coupon.discount
+			order.save()
+		return redirect('orders:order_detail', order_id)

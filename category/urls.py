@@ -8,6 +8,6 @@ router.register('', views.CategoryViewSet)
 
 urlpatterns = [
     
-    path('api/', include(router.urls),name='category'),
+    path('', include(router.urls),name='category'),
 
 ]

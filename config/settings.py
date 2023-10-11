@@ -66,7 +66,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR /'templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -168,6 +168,13 @@ REST_FRAMEWORK = {
     },
     
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    
+    #for jason render
+    'DEFAULT_RENDERER_CLASSES': [
+            
+        'rest_framework.renderers.JSONRenderer',
+        
+                                  ]
 }
 
 
