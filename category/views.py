@@ -7,6 +7,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
+    '''
+    categorys order by time
+    '''
     queryset = Category.objects.all().order_by("name")
     serializer_class = CategorySerializer
     filter_backends = [DjangoFilterBackend]
