@@ -1,62 +1,150 @@
-from django.urls import reverse
-from azbankgateways import (
-    bankfactories,
-    models as bank_models,
-    default_settings as settings,
-)
-import logging
-from django.http import HttpResponse, Http404
-from .models import Coupon, Ordering
-from django.shortcuts import redirect
-from .forms import CouponApplyForm
-from django.contrib import messages
-import datetime
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
+from .cart import Cart
+from home.models import Product
+from .forms import CartAddForm, CouponApplyForm
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from .models import Ordering, OrderItem, Coupon
+import requests
+import json
+from django.http import HttpResponse
+import datetime
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 
 
-def go_to_gateway_view(request):
-    # خواندن مبلغ از هر جایی که مد نظر است
-    amount = 1000
-    # تنظیم شماره موبایل کاربر از هر جایی که مد نظر است
-    user_mobile_number = "+989112221234"  # اختیاری
 
-    factory = bankfactories.BankFactory()
-    bank = factory.create()
-    bank.set_request(request)
-    bank.set_amount(amount)
-    # یو آر ال بازگشت به نرم افزار برای ادامه فرآیند
-    bank.set_client_callback_url(reverse("callback-gateway"))
-    bank.set_mobile_number(user_mobile_number)  # اختیاری
-
-    bank_record = bank.ready()
-
-    # هدایت کاربر به درگاه بانک
-    return bank.redirect_gateway()
+class CartView(View):
+    def get(self, request):
+        cart = Cart(request)
+        return render(request, "orders/cart.html", {"cart": cart})
 
 
-def callback_gateway_view(request):
-    tracking_code = request.GET.get(settings.TRACKING_CODE_QUERY_PARAM, None)
-    if not tracking_code:
-        logging.debug("&quotاین لینک معتبر نیست.&quot")
-        raise Http404
+class CartAddView(PermissionRequiredMixin, View):
+    permission_required = "orders.add_order"
 
-    try:
-        bank_record = bank_models.Bank.objects.get(tracking_code=tracking_code)
-    except bank_models.Bank.DoesNotExist:
-        logging.debug("&quotاین لینک معتبر نیست.&quot")
-        raise Http404
+    def post(self, request, product_id):
+        cart = Cart(request)
+        product = get_object_or_404(Product, id=product_id)
+        form = CartAddForm(request.POST)
+        if form.is_valid():
+            cart.add(product, form.cleaned_data["quantity"])
+        return redirect("orders:cart")
 
-    # در این قسمت باید از طریق داده هایی که در بانک رکورد وجود دارد، رکورد متناظر یا هر اقدام مقتضی دیگر را انجام دهیم
-    if bank_record.is_success:
-        # پرداخت با موفقیت انجام پذیرفته است و بانک تایید کرده است.
-        # می توانید کاربر را به صفحه نتیجه هدایت کنید یا نتیجه را نمایش دهید.
-        return HttpResponse("&quotپرداخت با موفقیت انجام شد.&quot")
 
-    # پرداخت موفق نبوده است. اگر پول کم شده است ظرف مدت ۴۸ ساعت پول به حساب شما بازخواهد گشت.
-    return HttpResponse(
-        "&quotپرداخت با شکست مواجه شده است. اگر پول کم شده است ظرف مدت 48 ساعت پول به حساب شما بازخواهد گشت.&quot"
-    )
+class CartRemoveView(View):
+    def get(self, request, product_id):
+        cart = Cart(request)
+        product = get_object_or_404(Product, id=product_id)
+        cart.remove(product)
+        return redirect("orders:cart")
+
+
+class OrderDetailView(LoginRequiredMixin, View):
+    form_class = CouponApplyForm
+
+    def get(self, request, order_id):
+        order = get_object_or_404(Ordering, id=order_id)
+        return render(
+            request, "orders/order.html", {"order": order, "form": self.form_class}
+        )
+
+
+class OrderCreateView(LoginRequiredMixin, View):
+    def get(self, request):
+        cart = Cart(request)
+        order = Ordering.objects.create(user=request.user)
+        for item in cart:
+            OrderItem.objects.create(
+                order=order,
+                product=item["product"],
+                price=item["price"],
+                quantity=item["quantity"],
+            )
+        cart.clear()
+        return redirect("orders:order_detail", order.id)
+
+
+MERCHANT = "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+ZP_API_REQUEST = "https://api.zarinpal.com/pg/v4/payment/request.json"
+ZP_API_VERIFY = "https://api.zarinpal.com/pg/v4/payment/verify.json"
+ZP_API_STARTPAY = "https://www.zarinpal.com/pg/StartPay/{authority}"
+description = "توضیحات مربوط به تراکنش را در این قسمت وارد کنید"
+CallbackURL = "http://127.0.0.1:8000/orders/verify/"
+
+
+class OrderPayView(LoginRequiredMixin, View):
+    def get(self, request, order_id):
+        order = Ordering.objects.get(id=order_id)
+        request.session["order_pay"] = {
+            "order_id": order.id,
+        }
+        req_data = {
+            "merchant_id": MERCHANT,
+            "amount": order.get_total_price(),
+            "callback_url": CallbackURL,
+            "description": description,
+            "metadata": {
+                "mobile": request.user.phone_number,
+                "email": request.user.email,
+            },
+        }
+        req_header = {"accept": "application/json", "content-type": "application/json'"}
+        req = requests.post(
+            url=ZP_API_REQUEST, data=json.dumps(req_data), headers=req_header
+        )
+        authority = req.json()["data"]["authority"]
+        if len(req.json()["errors"]) == 0:
+            return redirect(ZP_API_STARTPAY.format(authority=authority))
+        else:
+            e_code = req.json()["errors"]["code"]
+            e_message = req.json()["errors"]["message"]
+            return HttpResponse(f"Error code: {e_code}, Error Message: {e_message}")
+
+
+class OrderVerifyView(LoginRequiredMixin, View):
+    def get(self, request):
+        order_id = request.session["order_pay"]["order_id"]
+        order = Ordering.objects.get(id=int(order_id))
+        t_status = request.GET.get("Status")
+        t_authority = request.GET["Authority"]
+        if request.GET.get("Status") == "OK":
+            req_header = {
+                "accept": "application/json",
+                "content-type": "application/json'",
+            }
+            req_data = {
+                "merchant_id": MERCHANT,
+                "amount": order.get_total_price(),
+                "authority": t_authority,
+            }
+            req = requests.post(
+                url=ZP_API_VERIFY, data=json.dumps(req_data), headers=req_header
+            )
+            if len(req.json()["errors"]) == 0:
+                t_status = req.json()["data"]["code"]
+                if t_status == 100:
+                    order.paid = True
+                    order.save()
+                    return HttpResponse(
+                        "Transaction success.\nRefID: "
+                        + str(req.json()["data"]["ref_id"])
+                    )
+                elif t_status == 101:
+                    return HttpResponse(
+                        "Transaction submitted : " + str(req.json()["data"]["message"])
+                    )
+                else:
+                    return HttpResponse(
+                        "Transaction failed.\nStatus: "
+                        + str(req.json()["data"]["message"])
+                    )
+            else:
+                e_code = req.json()["errors"]["code"]
+                e_message = req.json()["errors"]["message"]
+                return HttpResponse(f"Error code: {e_code}, Error Message: {e_message}")
+        else:
+            return HttpResponse("Transaction failed or canceled by user")
 
 
 class CouponApplyView(LoginRequiredMixin, View):

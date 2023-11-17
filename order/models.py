@@ -1,7 +1,7 @@
 from django.db import models
 from account.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from product.models import Product
 # Create your models here.
 
 
@@ -29,3 +29,17 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
+
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Ordering, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = models.IntegerField()
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return str(self.id)
+
+    def get_cost(self):
+        return self.price * self.quantity

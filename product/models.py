@@ -29,19 +29,23 @@ class Product(models.Model):
         verbose_name_plural = "کالاها"
 
 
-# comment model
+
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    product = models.ForeignKey("Product", on_delete=models.CASCADE)
-    name = models.CharField(_("نام کاربر"), max_length=100, null=True)
-    email = models.EmailField(_("ادرس الکترونیکی"), max_length=254, null=True)
-    massage = models.TextField(_("متن نظر"), null=True)
-    date = models.DateField(
-        _("تاریخ ثبت"), auto_now=False, auto_now_add=True, null=True
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="ucomments")
+    post = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="pcomments")
+    reply = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        related_name="rcomments",
+        blank=True,
+        null=True,
     )
+    is_reply = models.BooleanField(default=False)
+    body = models.TextField(max_length=400)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.email
+        return f"{self.user} - {self.body[:30]}"
 
     class Meta:
         verbose_name = " نظر "
