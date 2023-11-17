@@ -13,7 +13,6 @@ from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 
 
-
 class CartView(View):
     def get(self, request):
         cart = Cart(request)

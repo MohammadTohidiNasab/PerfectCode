@@ -2,6 +2,7 @@ from django.db import models
 from account.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from product.models import Product
+
 # Create your models here.
 
 
@@ -29,7 +30,6 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
-
 
 
 class OrderItem(models.Model):
